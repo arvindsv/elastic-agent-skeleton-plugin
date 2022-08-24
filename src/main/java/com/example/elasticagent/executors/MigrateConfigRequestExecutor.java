@@ -41,6 +41,10 @@ public class MigrateConfigRequestExecutor implements RequestExecutor {
 
         PluginSettings pluginSettings = payload.pluginSettings();
 
+        if (payload.clusterProfiles().size() > 0 && "default".equals(payload.clusterProfiles().get(0).getId())) {
+            return new DefaultGoPluginApiResponse(200, GSON.toJson(payload));
+        }
+
         ClusterProfile clusterProfile = new ClusterProfile("default", Util.pluginId(),
                 new ClusterProfileProperties(
                         pluginSettings.getGoServerUrl(),

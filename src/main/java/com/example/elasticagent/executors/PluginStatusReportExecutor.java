@@ -34,17 +34,8 @@ public class PluginStatusReportExecutor implements RequestExecutor {
     public GoPluginApiResponse execute() throws Exception {
         LOG.info("[status-report] Generating status report");
 
-        List<String> reports = new ArrayList<>();
-
-        for (ClusterProfileProperties profile : request.allClusterProfileProperties()) {
-            AgentInstances agentInstances = allClusterInstances.get(profile.uuid());
-            StatusReport statusReport = agentInstances.getStatusReport(profile);
-            reports.add(viewBuilder.build("status-report-template", statusReport));
-        }
-
-        // aggregate reports for different cluster into one
         JsonObject responseJSON = new JsonObject();
-        responseJSON.addProperty("view", reports.stream().collect(Collectors.joining("<hr/>")));
+        responseJSON.addProperty("view", "{{ 1661012400000 | date:\"MMM dd, yyyy hh:mm a\"}}");
         return DefaultGoPluginApiResponse.success(responseJSON.toString());
     }
 }
